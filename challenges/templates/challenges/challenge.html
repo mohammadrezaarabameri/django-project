@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}
+	page info
+{% endblock %}
+{% block header_references %}
+	<link rel="stylesheet" href="{% static 'challenges/challenges.css' %}">
+{% endblock %}
+{% block content %}
+    {% include 'challenges/includes/header.html' %}
+	<h1>{{ user }}</h1>
+<p>{{ data }}</p>
+{% endblock %}

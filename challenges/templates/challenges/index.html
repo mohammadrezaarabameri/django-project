@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}
+ users info
+{% endblock %}
+{% block header_references %}
+	<link rel="stylesheet" href="{% static 'challenges/challenges.css' %}">
+{% endblock %}
+{% block content %}
+    {% include 'challenges/includes/header.html' %}
+	<ul>
+    {% for user in users %}
+    	<li>
+        <a href="{% url 'list_users' user %}">
+            {{ user }}
+        </a>
+        </li>
+    {% endfor %}
+
+</ul>
+{% endblock %}
