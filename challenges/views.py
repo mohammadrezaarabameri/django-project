@@ -1,6 +1,9 @@
+import logging
+
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound,Http404
-from django.template.loader import render_to_string
+
+logger = logging.getLogger(__name__)
 
 users = {
     1: 'user own',
@@ -19,18 +22,22 @@ def edit(request):
 
 
 def dynamic_users(request, user):
-    data_user = users.get(user)
+    try:
+        data_user = users[user]
+    except KeyError as exc:
+        logger.warning("Requested unknown user id %r", user)
+        raise Http404(f"No user with id {user}.") from exc
+
     context = {
         'data': data_user,
         'user': user,
     }
-    if data_user is not None:
-        return render(request,'challenges/challenge.html', context)
-    raise Http404()
+    return render(request, 'challenges/challenge.html', context)
+
 
 def list_users(request):
     data_users = list(users.keys())
     context = {
         'users': data_users,
     }
-    return render(request,'challenges/index.html', context)
+    return render(request, 'challenges/index.html', context)
