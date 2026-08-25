@@ -1,13 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound,Http404
-from django.template.loader import render_to_string
+from django.http import HttpResponse
 
-users = {
-    1: 'user own',
-    2: 'user two',
-    3: 'user three',
-    4: 'user for',
-}
+from .utils import get_user_ids, get_user_or_404
 
 
 def profile(request):
@@ -19,18 +13,15 @@ def edit(request):
 
 
 def dynamic_users(request, user):
-    data_user = users.get(user)
     context = {
-        'data': data_user,
+        'data': get_user_or_404(user),
         'user': user,
     }
-    if data_user is not None:
-        return render(request,'challenges/challenge.html', context)
-    raise Http404()
+    return render(request, 'challenges/challenge.html', context)
+
 
 def list_users(request):
-    data_users = list(users.keys())
     context = {
-        'users': data_users,
+        'users': get_user_ids(),
     }
-    return render(request,'challenges/index.html', context)
+    return render(request, 'challenges/index.html', context)
